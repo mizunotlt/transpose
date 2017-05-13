@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_transpose" default="compile.module.transpose">
+  <dirname property="module.transpose.basedir" file="${ant.file.module_transpose}"/>
+  
+  <property name="module.jdk.home.transpose" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.transpose" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.transpose" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.transpose" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="transpose.output.dir" value="${module.transpose.basedir}/out/production/transpose"/>
+  <property name="transpose.testoutput.dir" value="${module.transpose.basedir}/out/test/transpose"/>
+  
+  <path id="transpose.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="transpose.module.production.classpath">
+    <path refid="${module.jdk.classpath.transpose}"/>
+    <path refid="library.args4j-2.33.classpath"/>
+  </path>
+  
+  <path id="transpose.runtime.production.module.classpath">
+    <pathelement location="${transpose.output.dir}"/>
+    <path refid="library.args4j-2.33.classpath"/>
+  </path>
+  
+  <path id="transpose.module.classpath">
+    <path refid="${module.jdk.classpath.transpose}"/>
+    <pathelement location="${transpose.output.dir}"/>
+    <path refid="library.args4j-2.33.classpath"/>
+  </path>
+  
+  <path id="transpose.runtime.module.classpath">
+    <pathelement location="${transpose.testoutput.dir}"/>
+    <pathelement location="${transpose.output.dir}"/>
+    <path refid="library.args4j-2.33.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.transpose">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.transpose">
+    <patternset refid="excluded.from.module.transpose"/>
+  </patternset>
+  
+  <path id="transpose.module.sourcepath">
+    <dirset dir="${module.transpose.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.transpose" depends="compile.module.transpose.production,compile.module.transpose.tests" description="Compile module transpose"/>
+  
+  <target name="compile.module.transpose.production" depends="register.custom.compilers" description="Compile module transpose; production classes">
+    <mkdir dir="${transpose.output.dir}"/>
+    <javac2 destdir="${transpose.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.transpose}/javac">
+      <compilerarg line="${compiler.args.transpose}"/>
+      <bootclasspath refid="transpose.module.bootclasspath"/>
+      <classpath refid="transpose.module.production.classpath"/>
+      <src refid="transpose.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.transpose"/>
+    </javac2>
+    
+    <copy todir="${transpose.output.dir}">
+      <fileset dir="${module.transpose.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.transpose.tests" depends="register.custom.compilers,compile.module.transpose.production" description="compile module transpose; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.transpose" description="cleanup module">
+    <delete dir="${transpose.output.dir}"/>
+    <delete dir="${transpose.testoutput.dir}"/>
+  </target>
+</project>
