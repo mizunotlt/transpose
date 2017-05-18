@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class test {
-    public  transpose transpose1 = new  transpose(0, false, false);
+    public  transpose transpose1 = new  transpose(1, false, true);
     public  transpose transpose2 = new  transpose(2, false, true);
 
 
@@ -60,7 +60,7 @@ public class test {
 
     @Test
     public  void cmdLine() throws IOException {
-        String[]  args = {"-file", "file/input.txt", "-ofile", "file/output.txt"};
+        String[]  args = {"file/input.txt", "-ofile", "file/output.txt"};
         cmdLine line = new cmdLine();
         line.launch(args);
         FileInputStream in1 = new FileInputStream("file/output.txt");
@@ -80,7 +80,7 @@ public class test {
         Assert.assertEquals("A D\n" +
                 "B E\n" +
                 "C" , result1.toString());
-        String[]  args1 = {"-file", "file/input1.txt", "-ofile", "file/output2.txt", "-a", "2", "-t"};
+        String[]  args1 = {"file/input1.txt", "-ofile", "file/output2.txt", "-a", "2", "-t"};
         cmdLine line1 = new cmdLine();
         line1.launch(args1);
         FileInputStream in2 = new FileInputStream("file/output2.txt");

@@ -1,16 +1,16 @@
 package transpose;
 
+import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
-import  java.io.*;
 
-import java.io.IOException;
+import java.io.*;
 
 
 public class cmdLine {
-    @Option(name = "-file", metaVar = "file", usage = "Имя входного файла")
-    private  String inputFile;
+    @Argument(metaVar = "file", usage = "Имя входного файла")
+    private  String inputFile ;
 
     @Option(name = "-ofile", metaVar = "ofile", usage = "Имя выходного файла")
     private  String outputFile;
@@ -43,7 +43,7 @@ public class cmdLine {
 
         }catch (CmdLineException e){
             System.err.println(e.getMessage());
-            System.err.println("java -jar transpose.jar -a length -t cut -r -o ofile -file");
+            System.err.println("java -jar transpose.jar -a length -t cut -r -o ofile file");
             parser.printUsage(System.err);
             return;
         }
@@ -51,12 +51,11 @@ public class cmdLine {
         try {
             InputStream inputStream;
             OutputStream outputStream;
-            outputStream = outputFile == "" ? new BufferedOutputStream(System.out) : new FileOutputStream(outputFile);
-            inputStream = inputFile == "" ? new BufferedInputStream(System.in):  new FileInputStream(inputFile);
+            outputStream = outputFile == null ? new BufferedOutputStream(System.out) : new FileOutputStream(outputFile);
+            inputStream = inputFile == null ? new BufferedInputStream(System.in):  new FileInputStream(inputFile);
             transpose.transpose(inputStream, outputStream);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
     }
-
 }

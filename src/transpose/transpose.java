@@ -29,11 +29,9 @@ public class transpose {
                 String[] word = inputStream.nextLine().split(" ");
                 List<String> words = new ArrayList<>();
 
-                for (int i = 0; i < word.length; i++) {
-                    if (word[i].equals("")){
-                    }else{
-                        words.add(word[i]);
-                    }
+                for (String aWord : word) {
+                    if (!aWord.equals(""))
+                        words.add(aWord);
                 }
                 if (words.size() > maxWordsSize) {
                     maxWordsSize = words.size();
@@ -42,45 +40,30 @@ public class transpose {
             }
 
             // Обрезание доведение до нужного размера и выравнивания
-            for (int i = 0; i < inputStrings.size(); i++ ){
-                for (int j =0; j < inputStrings.get(i).size() ;j++){
+            for (List<String> inputString : inputStrings) {
+                for (int j = 0; j < inputString.size(); j++) {
                     //выравнивание и доведение до нужного размера
-                    if (rightBorder) {
-                        if (inputStrings.get(i).get(j).length() < length) {
-                            StringBuilder sb = new StringBuilder();
-                            for (int k = inputStrings.get(i).get(j).length(); k < length; k++)
-                                sb.append(" ");
-                            sb.insert(sb.length(), inputStrings.get(i).get(j));
-                            inputStrings.get(i).set(j,sb.toString());
-                        }
-                        if ((inputStrings.get(i).get(j).length() > length) && (cut)) {
-                            inputStrings.get(i).set(j,inputStrings.get(i).get(j).substring(0,length));
-                        }
-                    }
-                    else{
-                        if (inputStrings.get(i).get(j).length() < length) {
-                            StringBuilder sb = new StringBuilder();
-                            for (int k = inputStrings.get(i).get(j).length(); k <= length; k++)
-                                sb.append(" ");
-                            sb.insert(0, inputStrings.get(i).get(j));
-                            inputStrings.get(i).set(j,sb.toString());
-                        }
-                        if ((inputStrings.get(i).get(j).length() > length) && (cut)) {
-                            inputStrings.get(i).set(j,inputStrings.get(i).get(j).substring(0,length));
-                        }
+                    String newString = inputString.get(j);
+                    if (newString.length() < length) {
+                        StringBuilder sb = new StringBuilder();
+                        for (int k = newString.length(); k < length; k++)
+                            sb.append(" ");
+                        sb.insert(rightBorder ? sb.length() : 0, newString);
+                        inputString.set(j, sb.toString());
+                    } else if ((newString.length() > length) && (cut)) {
+                        inputString.set(j, newString.substring(0, length));
                     }
                 }
             }
-
             for (int i = 0; i < maxWordsSize; i++){
                 StringBuilder sb = new StringBuilder();
-                for (int j = 0; j < inputStrings.size(); j++){
-                    try{
-                        sb.append(inputStrings.get(j).get(i));
-                            sb.append(" ");
-                    }catch (IndexOutOfBoundsException ignore){
-                        if ( i != maxWordsSize - 1)
-                            sb.append(" ");
+                for (List<String> inputString : inputStrings) {
+                    try {
+                        sb.append(inputString.get(i));
+                        sb.append(" ");
+                    } catch (IndexOutOfBoundsException ignore) {
+                        if (i != maxWordsSize - 1)
+                        sb.append(" ");
                     }
                 }
                 out.println(sb.toString().substring(0, sb.toString().length() - 1));
