@@ -55,6 +55,7 @@ public class transpose {
                     }
                 }
             }
+
             for (int i = 0; i < maxWordsSize; i++){
                 StringBuilder sb = new StringBuilder();
                 for (List<String> inputString : inputStrings) {
@@ -62,11 +63,21 @@ public class transpose {
                         sb.append(inputString.get(i));
                         sb.append(" ");
                     } catch (IndexOutOfBoundsException ignore) {
-                        if (i != maxWordsSize - 1)
                         sb.append(" ");
                     }
                 }
-                out.println(sb.toString().substring(0, sb.toString().length() - 1));
+                char[] result = sb.toString().toCharArray();
+                StringBuilder finalString = new StringBuilder();
+                boolean spaceTest = true;
+                for (int k = result.length - 1; k >= 0; k--){
+                    if ((result[k] != ' ') && (spaceTest)){
+                        spaceTest = false;
+                    }
+                    if (!spaceTest)
+                        finalString.append(result[k]);
+
+                }
+                out.println(finalString.reverse().toString());
             }
         }
         out.close();
