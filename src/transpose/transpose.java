@@ -53,34 +53,33 @@ public class transpose {
                     } else if ((newString.length() > length) && (cut)) {
                         inputString.set(j, newString.substring(0, length));
                     }
+
+                }
+                if (inputString.size() != maxWordsSize){
+                    while (inputString.size() != maxWordsSize){
+                        StringBuilder sb = new StringBuilder();
+                        for (int k = 0; k < length; k++){
+                            sb.append(" ");
+                        }
+                        inputString.add(sb.toString());
+                    }
                 }
             }
 
             for (int i = 0; i < maxWordsSize; i++){
                 StringBuilder sb = new StringBuilder();
                 for (List<String> inputString : inputStrings) {
-                    try {
-                        sb.append(inputString.get(i));
-                        sb.append(" ");
-                    } catch (IndexOutOfBoundsException ignore) {
-                        sb.append(" ");
-                    }
-                }
-                char[] result = sb.toString().toCharArray();
-                StringBuilder finalString = new StringBuilder();
-                boolean spaceTest = true;
-                for (int k = result.length - 1; k >= 0; k--){
-                    if ((result[k] != ' ') && (spaceTest)){
-                        spaceTest = false;
-                    }
-                    if (!spaceTest)
-                        finalString.append(result[k]);
+
+                    sb.append(inputString.get(i));
+                    sb.append(" ");
 
                 }
-                out.println(finalString.reverse().toString());
+                String result = sb.toString();
+                out.println(result.substring(0, sb.length() - 1));
             }
         }
         out.close();
     }
 }
+
 

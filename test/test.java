@@ -14,6 +14,7 @@ public class test {
     public transpose transpose1 = new transpose(1, false, true);
     public transpose transpose2 = new transpose(2, false, true);
     public transpose transpose3 = new transpose(1, false, true);
+    public transpose transpose4 = new transpose(4, true, true);
 
 
     @Test
@@ -36,7 +37,7 @@ public class test {
         file1.close();
         Assert.assertEquals("A D\n" +
                 "B E\n" +
-                "C", result1.toString());
+                "C  ", result1.toString());
 
         transpose3.transpose(new FileInputStream("file/input3.txt"), new FileOutputStream("file/output3.txt"));
         FileInputStream in3 = new FileInputStream("file/output3.txt");
@@ -54,10 +55,30 @@ public class test {
         }
         file3.close();
         Assert.assertEquals("z s d s d\n" +
-                "s d g d\n" +
-                "e  f\n" +
-                "v\n" + "s", result3.toString());
+                "s d g d  \n" +
+                "e   f    \n" +
+                "v        \n" +
+                "s        ", result3.toString());
 
+        transpose4.transpose(new FileInputStream("file/input4.txt"), new FileOutputStream("file/output4.txt"));
+        FileInputStream in4 = new FileInputStream("file/output4.txt");
+        Scanner file4= new Scanner(in4);
+        StringBuilder result4 = new StringBuilder();
+        List<String> resList4 = new ArrayList<>();
+        while (file4.hasNextLine()) {
+            resList4.add(file4.nextLine());
+        }
+        for (int i = 0; i < resList4.size(); i++) {
+            result4
+                    .append(resList4.get(i));
+            if (i != resList4.size() - 1) {
+                result4.append("\n");
+            }
+        }
+        file4.close();
+        Assert.assertEquals("  zx  asd erdf\n" +
+                "zxcv        vb\n" +
+                "derf          " , result4.toString());
 
         transpose2.transpose(new FileInputStream("file/input1.txt"), new FileOutputStream("file/output2.txt"));
         FileInputStream in2 = new FileInputStream("file/output2.txt");
@@ -76,7 +97,8 @@ public class test {
         file2.close();
         Assert.assertEquals("cu bu cv\n" +
                 "de gr lo\n" +
-                "re de", result2.toString());
+                "re de   ", result2.toString());
+
     }
 
     @Test
@@ -100,7 +122,7 @@ public class test {
         file1.close();
         Assert.assertEquals("A D\n" +
                 "B E\n" +
-                "C", result1.toString());
+                "C ", result1.toString());
 
         String[] args1 = {"file/input1.txt", "-ofile", "file/output2.txt", "-a", "2", "-t"};
         cmdLine line1 = new cmdLine();
@@ -121,7 +143,7 @@ public class test {
         file2.close();
         Assert.assertEquals("cu bu cv\n" +
                 "de gr lo\n" +
-                "re de", result2.toString());
+                "re de   ", result2.toString());
 
         String[] args3 = {"file/input3.txt", "-ofile", "file/output2.txt", "-a", "1", "-t"};
         cmdLine line3 = new cmdLine();
@@ -146,9 +168,36 @@ public class test {
         }
         file3.close();
         Assert.assertEquals("z s d s d\n"+
-                "s d g d\n"+
-                "e  f\n"+
-                "v\n"+"s",result3.toString());
+                "s d g d  \n"+
+                "e   f    \n"+
+                "v        \n"+
+                "s        ",result3.toString());
+
+        String[] args4 = {"file/input4.txt", "-ofile", "file/output4.txt", "-a", "4", "-t", "-r"};
+        cmdLine line4 = new cmdLine();
+        line4.launch(args4);
+        FileInputStream in4 = new FileInputStream("file/output4.txt");
+        Scanner file4 = new Scanner(in4);
+        StringBuilder result4 = new StringBuilder();
+        List<String> resList4 = new ArrayList<>();
+        while(file4.hasNextLine())
+
+        {
+            resList4.add(file4.nextLine());
+        }
+        for(
+                int i = 0; i<resList4.size();i++)
+
+        {
+            result4.append(resList4.get(i));
+            if (i != resList4.size() - 1) {
+                result4.append("\n");
+            }
+        }
+        file4.close();
+        Assert.assertEquals("  zx  asd erdf\n" +
+                "zxcv        vb\n" +
+                "derf          " , result4.toString());
 
     }
 }
