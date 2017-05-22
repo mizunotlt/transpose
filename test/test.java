@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class test {
-    public transpose transpose1 = new transpose(1, false, true);
-    public transpose transpose2 = new transpose(2, false, true);
+    public transpose transpose1 = new transpose(1, false, false);
+    public transpose transpose2 = new transpose(2, true, false);
     public transpose transpose3 = new transpose(1, false, true);
     public transpose transpose4 = new transpose(4, true, true);
 
@@ -95,15 +95,16 @@ public class test {
             }
         }
         file2.close();
-        Assert.assertEquals("cu bu cv\n" +
-                "de gr lo\n" +
-                "re de   ", result2.toString());
+        Assert.assertEquals("cut but cve\n" +
+                "def grood loj\n" +
+                "red dec   ", result2.toString());
 
     }
 
     @Test
     public void cmdLine() throws IOException {
-        String[] args = {"file/input.txt", "-ofile", "file/output.txt"};
+
+        String[] args = {"file/input.txt", "-ofile", "file/output.txt", "-a" , "1"};
         cmdLine line = new cmdLine();
         line.launch(args);
         FileInputStream in1 = new FileInputStream("file/output.txt");
@@ -122,7 +123,51 @@ public class test {
         file1.close();
         Assert.assertEquals("A D\n" +
                 "B E\n" +
-                "C ", result1.toString());
+                "C  ", result1.toString());
+
+        String[] args5 = {"file/input.txt", "-ofile", "file/output5.txt", "-r"};
+        cmdLine line5 = new cmdLine();
+        line5.launch(args5);
+        FileInputStream in5= new FileInputStream("file/output5.txt");
+        Scanner file5 = new Scanner(in5);
+        StringBuilder result5 = new StringBuilder();
+        List<String> resList5 = new ArrayList<>();
+        while (file5.hasNextLine()) {
+            resList5.add(file5.nextLine());
+        }
+        for (int i = 0; i < resList5.size(); i++) {
+            result5.append(resList5.get(i));
+            if (i != resList5.size() - 1) {
+                result5.append("\n");
+            }
+        }
+        file5.close();
+        Assert.assertEquals("         A          D\n" +
+                "         B          E\n" +
+                "         C           ", result5.toString());
+
+
+        String[] args6 = {"file/input1.txt", "-ofile", "file/output6.txt", "-r"};
+        cmdLine line6 = new cmdLine();
+        line6.launch(args6);
+        FileInputStream in6= new FileInputStream("file/output6.txt");
+        Scanner file6 = new Scanner(in6);
+        StringBuilder result6 = new StringBuilder();
+        List<String> resList6 = new ArrayList<>();
+        while (file6.hasNextLine()) {
+            resList6.add(file6.nextLine());
+        }
+        for (int i = 0; i < resList6.size(); i++) {
+            result6.append(resList6.get(i));
+            if (i != resList6.size() - 1) {
+                result6.append("\n");
+            }
+        }
+        file6.close();
+        Assert.assertEquals("       cut        but        cve\n" +
+                "       def      grood        loj\n" +
+                "       red        dec           ", result6.toString());
+
 
         String[] args1 = {"file/input1.txt", "-ofile", "file/output2.txt", "-a", "2", "-t"};
         cmdLine line1 = new cmdLine();
